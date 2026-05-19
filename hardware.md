@@ -12,6 +12,7 @@ Before we start, here is the BOM.
 ## Table of Contents:
 * [1. Disassembly](#1-disassembly) (Skip if your laptop is already disassembled.)
 * [2. Flashing](#2-flashing) (Jump straight to flashing.)
+* [3. How This Build Differs from Upstream Heads](#how-this-build-differs-from-upstream-heads)
 
 ## 1. Disassembly
 
@@ -26,23 +27,29 @@ Before we start, here is the BOM.
 #### 3. Turn the laptop back over, pry up the keyboard and slide it towards the screen. Be careful — there is a connector under the keyboard. Disconnect it and remove the keyboard.
 
 ![](media/3.jpg)
+
 ![](media/4.jpg)
 
 #### 4. Unscrew the screws holding the palmrest. Now we need a guitar pick — pry up the palmrest and carefully open it, as shown in the photo.
 
 ![](media/5.jpg)
+
 ![](media/6.jpg)
+
 ![](media/7.jpg)
+
 ![](media/8.jpg)
 
 #### 5. Pull it towards yourself. Be careful not to break off the part of the palmrest that goes under the screen. After lifting the freed palmrest, disconnect the touchpad connector and remove the palmrest.
 
 ![](media/9.jpg)
+
 ![](media/10.jpg)
 
 #### 6. Now unscrew all the marked screws and remove the speakers, disconnect the display ribbon cable (1), and disconnect the network card. You can also remove the RAM.
 
 ![](media/11.jpg)
+
 ![](media/12.jpg)
 
 #### 7. After that, disconnect the second display ribbon cable and the USB cover. Also free all the wires going into the display.
@@ -72,6 +79,7 @@ Before we start, here is the BOM.
 #### 13. Turn the motherboard over and unscrew the screws as shown in the photo. Then, after turning it back over, unscrew the screws holding the cooling system from 4 to 1, little by little. Be careful not to crack the processor, then remove the cooler.
 
 ![](media/21.jpg)
+
 ![](media/20.jpg)
 
 #### 14. Now we can finally remove the cage and access the BIOS chips: U49 (4MB), where the Intel ME is located, and the main U99 (8MB), where the BIOS is located.
@@ -135,6 +143,7 @@ Before making any modifications, you must take at least 2 independent read dumps
 Connect your SOP8/SOIC8 test clip to the hardware programmer. Double-check the Pin 1 marker (usually indicated by a red wire on the ribbon cable and a dot on the chip).
 
 ![](media/ch341a.jpg)
+
 ![](media/ch341a-on-chip.jpg)
 
 #### Reading the Current Firmware (8MB chip)
@@ -370,3 +379,43 @@ Verifying flash... VERIFIED.
 ############################################################
 
 ```
+
+## How This Build Differs from Upstream Heads
+
+At the end of this guide, you will find a detailed comparison explaining exactly how this build differs from the upstream Heads project.
+
+The changes are split across two config files: the Heads board config (`EOL_t430-hotp-maximized.config`) and the coreboot config (`coreboot-t430-maximized.config`). Both are patched automatically by `build.sh`.
+
+### Heads Config Changes
+
+**`CONFIG_BOOT_STATIC_IP=n`** — Static IP at boot is disabled. Heads does not bring up a network with a fixed address before the OS starts, which reduces the attack surface at the firmware stage.
+
+**`CONFIG_TMP_NOT_PRESENT=n`** — Tells Heads that a TPM chip is present and should be used. Required for HOTP attestation via a hardware token.
+
+**`CONFIG_BOOT_GUI_MENU=y`** — Enables the graphical boot menu instead of the text-based one. Uses fbwhiptail and cairo for rendering.
+
+**`CONFIG_TPM_PCR_SIGNATURE=y`** — Enables signature verification through TPM PCR registers. On every boot, Heads compares the hashes of each boot stage against reference values, detecting any changes to the firmware.
+
+**`CONFIG_HOTPKEY=y`** — Enables support for a physical HOTP token (Nitrokey, Librem Key, Token2). On every boot the token generates a one-time code based on a counter — Heads checks it and halts the boot process if the code does not match. This is protection against an evil maid attack: silently replacing the firmware becomes impossible.
+
+**`CONFIG_BOOT_KERNEL_ADD`** — Sets additional kernel parameters: `iommu=on,igfx,verbose intel_iommu=on,igfx_off swiotlb=65536`. These enable IOMMU at the kernel level, exclude the integrated GPU from IOMMU (required for correct display initialization), and allocate a 256 MB software I/O TLB buffer for DMA-incapable devices.
+
+### Coreboot Config Changes
+
+**`CONFIG_MAINBOARD_USE_LIBGFXINIT=y`** — Uses libgfxinit instead of the proprietary VGA BIOS blob for graphics initialization. libgfxinit is an open implementation written in Ada and is one of the key Libreboot-inspired flags in this build.
+
+**`CONFIG_GENERIC_LINEAR_FRAMEBUFFER=y` / `CONFIG_LINEAR_FRAMEBUFFER=y`** — Enable the linear framebuffer. After GPU initialization via libgfxinit, the Linux kernel gets direct access to video memory for rendering the Heads graphical interface.
+
+**`CONFIG_DRAM_RESET_GATE_SKIP=y`** — Skips the DRAM reset gate mechanism. On Ivy Bridge (T430) this mechanism is implemented incorrectly and causes a hang on reboot. This flag is required for stable operation on this specific hardware.
+
+**`CONFIG_IOMMU=y` / `CONFIG_INTEL_VTD=y`** — Enable hardware device isolation through IOMMU and Intel VT-d. Each device gets access only to its own memory region. Critically important for Qubes OS — provides physical isolation of USB, network, and other controllers at the hardware level.
+
+**`CONFIG_LINEAR_FRAMEBUFFER_MAX_HEIGHT=1600` / `CONFIG_LINEAR_FRAMEBUFFER_MAX_WIDTH=2560`** — Set the maximum framebuffer resolution. Without these flags coreboot may cap the resolution below what the display panel supports. Taken from the Libreboot config for T430.
+
+**`CONFIG_SECURITY_CLEAR_DRAM_ON_REGULAR_BOOT=y`** — Clears RAM on every boot. Protection against a cold boot attack — after shutdown no data from the previous session remains in memory that could be read by physically removing the RAM stick.
+
+**`CONFIG_DECOMPRESS_OFAST=y`** — Uses maximum optimization when decompressing the ramstage from ROM. Speeds up firmware startup.
+
+**`CONFIG_NO_STAGE_CACHE=y`** — Disables caching of boot stages in SPI flash. Every boot reads data directly from ROM, eliminating the cache as a potential attack vector.
+
+**`CONFIG_RAMSTAGE_ADA=y`** — Includes the Ada runtime in the ramstage. Required for libgfxinit to work — without it, a build with open-source graphics initialization is not possible.

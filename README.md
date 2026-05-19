@@ -54,13 +54,12 @@ sudo apk add podman
 sudo apk add git
 ```
 
-#### Copying SingularN repo (Getting the Source Code)
+#### Copying SingularN repo
 
 To start the build process inside the isolated Podman container, you have to clone repo, and after that simply run the provided automation script:
 
 ```bash
 git clone https://github.com/fx2null/SingularN.git
-#Cloning repo
 cd SingularN
 ```
 #### Customizing the Bootsplash (Optional)
@@ -109,7 +108,15 @@ chmod +x build.sh
 
 Once the build process is complete, all 3 generated `.rom` files will be available in the `SingularN-ROMS` directory.
 
-#### Part 2: Hardware Flashing & Installation
+### Part 2: Hardware Flashing & Installation
 Now that you have your compiled `.rom` files ready in the `SingularN-ROMS` directory, you need to flash them onto your ThinkPad T430 using an external programmer.
 The complete step-by-step physical disassembly guide, chip pinouts (U49 and U99), and the exact `flashrom` commands are located in the dedicated hardware documentation file:
 **[Read Part 2: Hardware Disassembly & Flashing](https://github.com/fx2null/SingularN/blob/main/hardware.md)**
+
+## What All of This Actually Gives You
+
+After going through all of this — the disassembly, the flashing, the custom build — what you end up with is a machine that boots entirely on open-source code, from the first instruction after power-on to the moment your OS takes over.
+
+There is no proprietary VGA BIOS blob initializing your display. There is no Intel ME running its own closed firmware in the background with access to your memory and network. Graphics are initialized by libgfxinit — open Ada code that you can read, audit, and trust. Every boot stage is measured and verified against known-good values. A physical token in your hand is the final word on whether the machine is allowed to continue booting.
+
+This is what firmware freedom looks like in practice: not just a philosophical position, but a concrete technical reality where every component of your boot chain is accounted for, auditable, and under your control.
