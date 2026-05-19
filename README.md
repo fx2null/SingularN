@@ -6,7 +6,7 @@ This guide is split into two parts: **Software** and **Hardware**.
 1. **Software:** How to compile the custom firmware.
 2. **Hardware:** How to flash and install it onto your device.
 
-**(If you want, you can use finished ones from [Realeses](https://github.com/fx2null/SingularN/releases/))**
+**(If you want, you can use finished ones from [Releases](https://github.com/fx2null/SingularN/releases/))**
 
 **HOTP vs TOTP — What's the Difference?**
 
