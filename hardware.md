@@ -173,7 +173,8 @@ Please specify which chip definition to use with the -c <chipname> option.
 ```
 
 **NOTES**
-**Note №1:** The exact chip model may vary depending on your laptop's manufacturing date. In my case, it was a **MX25L6406E/MX25L6408E**.
+
+**Note №1:** The exact chip model may vary depending on your laptop's manufacturing date. In my case, it was a **MX25L6406E/MX25L6408E** and **MX25L3205D/MX25L3208D**
 
 **Note №2:** Troubleshooting: Write Protection Error
 
