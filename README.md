@@ -81,14 +81,17 @@ If you want to change this behavior (for example, to use all cores for maximum s
 
 1. Open `build.sh` in a text editor.
 2. Locate the **`NUM_CPUS`** variable at the top of the file:
+
    ```bash
    NUM_CPUS=$(( $(nproc) - 1 ))
    ```
-3. (1) Change it (for example I used 4, enter how many you want):
+3. 
+    (1) Change it (for example I used 4, enter how many you want):
     ```bash
     NUM_CPUS=4
     ```
-3. (2) To use absolutely all available power (maximum speed, but the system might lag during build):
+    (2) To use absolutely all available power (maximum speed, but the system might lag during build):
+
     ```bash
     NUM_CPUS=$(nproc)
     ```
