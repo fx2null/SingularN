@@ -3,6 +3,7 @@ set -euo pipefail
 
 BOARD_NAME="EOL_t430-hotp-maximized"
 VERSION="v3.0.0"
+NUM_CPUS=$(( $(nproc) - 1 ))
 
 build_in_container() {
     podman run --rm \
@@ -38,11 +39,11 @@ build_in_container() {
 
             if [ ! -f build/x86/coreboot-25.09/util/crossgcc/xgcc/bin/i386-elf-gcc ]; then
                 make BOARD=${BOARD_NAME} crossgcc-i386 \
-                    CPUS=\$(( \$(nproc) - 1 )) \
+                    CPUS=${NUM_CPUS} \
                     GCC_OPTIONS='--enable-languages=c,ada' || true
             fi
 
-            make BOARD=${BOARD_NAME} CPUS=\$(( \$(nproc) - 1 ))
+            make BOARD=${BOARD_NAME} CPUS=${NUM_CPUS}
         "
 }
 
