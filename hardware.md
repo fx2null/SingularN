@@ -179,9 +179,31 @@ Multiple flash chip definitions match the detected chip(s): "MX25L6405", "MX25L6
 Please specify which chip definition to use with the -c <chipname> option.
 ```
 
-**Note:** The exact chip model may vary depending on your laptop's manufacturing date. In my case, it was a **MX25L6406E/MX25L6408E**.
+**NOTES**
 
-3. **After confirming that the computer detects our chip, we can create dumps 1 and 2:**
+**Note №1:** The exact chip model may vary depending on your laptop's manufacturing date. In my case, it was a **MX25L6406E/MX25L6408E** and **MX25L3205D/MX25L3208D**
+
+**Note №2:** Troubleshooting: Write Protection Error
+
+Sometimes, when attempting to erase or write to the chip, flashrom may throw an error stating that the memory is write-protected (due to block protection bits BP0–BP2 active in the status register). While the chips on the T430 are not hardware-locked via the physical WP# pin, software protection flags inside the chip itself can sometimes be left enabled.
+
+1. Check the current protection status:
+   ```bash
+   
+   flashrom -p ch341a_spi --wp-status
+   
+   ```
+If the utility shows that protection is enabled or a protected range (wp-range) is specified, it needs to be disabled.
+
+2. Disable the write protection if it's enabled:
+   ```bash
+   
+   flashrom -p ch341a_spi --wp-disable
+   
+   ```
+
+
+4. **After confirming that the computer detects our chip, we can create dumps 1 and 2:**
 
 ```bash
 
