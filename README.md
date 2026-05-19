@@ -30,7 +30,7 @@ sudo pacman -S podman
 sudo pacman -S git
 ```
 
-Alternatively, if you prefer using an AUR helper (like yay or paru), you can install it or additional rootless tools from the AUR:
+Alternatively, you can use an AUR helper (such as yay or paru) to install it:
 ```bash
 yay -S podman
 yay -S git
