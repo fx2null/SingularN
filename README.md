@@ -7,6 +7,7 @@ This guide is split into two parts: **Software** and **Hardware**.
 2. **Hardware:** How to flash and install it onto your device.
 
 **(If you want, you can use finished ones from [Realeses](https://github.com/fx2null/SingularN/releases/))**
+
 At the end of this guide, you will find a detailed comparison explaining exactly how this build differs from the upstream Heads project.
 
 ---
