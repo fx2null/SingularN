@@ -8,7 +8,18 @@ This guide is split into two parts: **Software** and **Hardware**.
 
 **(If you want, you can use finished ones from [Realeses](https://github.com/fx2null/SingularN/releases/))**
 
+**HOTP vs TOTP — What's the Difference?**
+
+Both are one-time password standards, but they work differently. `TOTP` (Time-based) generates codes based on the current time — this is what most 2FA apps like Google Authenticator use. `HOTP` (HMAC-based) generates codes based on a counter that increments with each use. Heads uses `HOTP` specifically because it does not require a clock — the firmware has no reliable time source — and because the counter-based model ties the token directly to the number of boots, making any unexpected increment a red flag.
+
+If your token does not support `HOTP` (for example, if it only does `TOTP`), do not use `HOTP` version. A misconfigured attestation setup is worse than none — it creates a false sense of security. Compatible hardware includes Nitrokey Pro/Storage, Librem Key, and Token2 HOTP-capable devices.
+
+**A note on [GPG](https://gnupg.org/):** Regardless of which attestation method you use, having a GPG-capable token for signing /boot is strongly recommended and in practice nearly mandatory for a meaningful security setup. Without it, Heads can detect tampering but cannot verify the integrity of your kernel and initrd against a trusted key you physically hold. Supported tokens include Nitrokey Pro, Librem Key, and any OpenPGP-compatible smartcard.
+
+**In short:**  if you have a compatible HOTP token, use `build-hotp.sh` — it gives you the full attestation chain. If you do not have one, use `build-totp.sh` instead, which displays a QR code on boot that you verify with any TOTP app on your phone. Either way, a GPG token for /boot signing remains highly recommended regardless of which script you choose.
+
 At the end of this guide, you will find a detailed comparison explaining exactly how this build differs from the upstream Heads project.
+
 
 ---
 
@@ -80,7 +91,7 @@ Please note that the compilation time can vary significantly depending on your h
 
 If you want to change this behavior (for example, to use all cores for maximum speed, or fewer cores to keep the system completely cool), open `build.sh` in a text editor and modify the core allocation variable at the top of the file.
 
-1. Open `build.sh` in a text editor.
+1. Open `build-hotp.sh` or a `build-totp.sh` in a text editor.
 2. Locate the **`NUM_CPUS`** variable at the top of the file:
 
    ```bash
@@ -97,13 +108,26 @@ If you want to change this behavior (for example, to use all cores for maximum s
     NUM_CPUS=$(nproc)
     ```
 
-#### Starting the script
+#### Starting the script (It depends on which version you are using)
+
+**For HOTP versioin:**
 
 ```bash
-chmod +x build.sh
+
 # Giving the script execution permissions
-./build.sh
-#Starting the script
+chmod +x build-hotp.sh
+
+./build-hotp.sh
+```
+
+**For TOTP versioin:**
+
+```bash
+
+# Giving the script execution permissions
+chmod +x build-totp.sh
+
+./build-totp.sh
 ```
 
 #### After script finished its work

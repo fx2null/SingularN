@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BOARD_NAME="EOL_t430-hotp-maximized"
+BOARD_NAME="EOL_t430-maximized"
 VERSION="v3.0.0"
 NUM_CPUS=$(( $(nproc) - 1 ))
 
@@ -82,8 +82,7 @@ heads_settings=(
     "CONFIG_BOOT_STATIC_IP=n"
     "CONFIG_TMP_NOT_PRESENT=n"
     "CONFIG_BOOT_GUI_MENU=y"
-    "CONFIG_TPM_PCR_SIGNATURE=y"
-    "CONFIG_HOTPKEY=y"
+    #"CONFIG_HOTPKEY=y"
 )
 
 cb_settings=(
@@ -154,14 +153,14 @@ build_in_container
 ROM_PATH="./heads/build/x86/${BOARD_NAME}"
 
 mv "${ROM_PATH}/heads-${BOARD_NAME}-"*"dirty.rom" \
-   "${ROM_PATH}/SingularN-T430-${VERSION}-FULL-12MB.rom" 2>/dev/null || true
+   "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-FULL-12MB.rom" 2>/dev/null || true
 mv "${ROM_PATH}/heads-${BOARD_NAME}-"*"-bottom.rom" \
-   "${ROM_PATH}/SingularN-T430-${VERSION}-BOTTOM-8MB.rom" 2>/dev/null || true
+   "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-BOTTOM-8MB.rom" 2>/dev/null || true
 mv "${ROM_PATH}/heads-${BOARD_NAME}-"*"-top.rom" \
-   "${ROM_PATH}/SingularN-T430-${VERSION}-TOP-4MB.rom" 2>/dev/null || true
+   "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-TOP-4MB.rom" 2>/dev/null || true
 
 echo "Done: "
-sha256sum "${ROM_PATH}/SingularN-T430-${VERSION}-"*
+sha256sum "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-"*
 mkdir -p SingularN-ROMS
 mkdir -p Dumps
 cp ${ROM_PATH}/SingularN* ./SingularN-ROMS/

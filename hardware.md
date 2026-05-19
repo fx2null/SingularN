@@ -230,9 +230,21 @@ cd SingularN-roms
 
 **Run the following command to flash it:**
 
+**(It depends on which version you are using)**
+
+For HOTP version:
+
 ```bash
 
-sudo flashrom -p ch341a_spi -c MX25L6406E/MX25L6408E -w SingularN-T430-v3.0.0-BOTTOM-8MB.rom
+sudo flashrom -p ch341a_spi -c MX25L6406E/MX25L6408E -w SingularN-T430-HOTP-v3.0.0-BOTTOM-8MB.rom
+
+```
+
+For TOTP version:
+
+```bash
+
+sudo flashrom -p ch341a_spi -c MX25L6406E/MX25L6408E -w SingularN-T430-TOTP-v3.0.0-BOTTOM-8MB.rom
 
 ```
 
@@ -336,11 +348,24 @@ cd SingularN-roms
 
 **Run the following command to flash it:**
 
+**(It depends on which version you are using)**
+
+For HOTP version:
+
 ```bash
 
-sudo flashrom -p ch341a_spi -c MX25L3205D/MX25L32080 -w SingularN-T430-v3.0.0-TOP-4MB.rom
+sudo flashrom -p ch341a_spi -c MX25L3205D/MX25L32080 -w SingularN-T430-HOTP-v3.0.0-TOP-4MB.rom
 
 ```
+
+For TOTP version:
+
+```bash
+
+sudo flashrom -p ch341a_spi -c MX25L3205D/MX25L32080 -w SingularN-T430-TOTP-v3.0.0-TOP-4MB.rom
+
+```
+
 
 **The output should be:**
 
@@ -384,7 +409,7 @@ Verifying flash... VERIFIED.
 
 At the end of this guide, you will find a detailed comparison explaining exactly how this build differs from the upstream Heads project.
 
-The changes are split across two config files: the Heads board config (`EOL_t430-hotp-maximized.config`) and the coreboot config (`coreboot-t430-maximized.config`). Both are patched automatically by `build.sh`.
+The changes are split across two config files: the Heads board config (`EOL_t430-hotp-maximized.config` or `EOL_t430-maximized.config` for totp version) and the coreboot config (`coreboot-t430-maximized.config`). Both are patched automatically by `build.sh`.
 
 ### Heads Config Changes
 
