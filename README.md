@@ -1,2 +1,2 @@
 # SingularN
-User-friendly build script for hardened Heads firmware on ThinkPad T430. Key feature is Libreboot-inspired coreboot flags for maximum security and openness.
+SingularN is user-friendly build script for hardened Heads firmware on ThinkPad T430. Key feature is [Libreboot](https://libreboot.org)-inspired [coreboot](https://www.coreboot.org) flags for maximum security and openness. This project automates the compilation of firmware based on the [Heads](https://github.com/osresearch/heads) project.
