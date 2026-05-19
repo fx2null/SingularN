@@ -20,6 +20,6 @@ Table of Contents:
 10. Turn the laptop over and, after unlocking, remove the optical drive.
 11. ​Pulling the magnesium roll cage upwards from the left side, remove it from the plastic.
 12. Turn the motherboard over and unscrew the screws as shown in the photo, then after turning it back over, unscrew the screws holding the cooling system, from 4 to 1 little by little, be careful not to crack the processor, then remove the cooler.
-13. ​Now we can finally remove the cage and get to the BIOS chips: U49 on 4MB where Intel ME is located, and the main U99 where the BIOS is located.
+13. ​Now we can finally remove the cage and get to the BIOS chips: U49 on 4MB where Intel ME is located, and the main U99 on 8MB where the BIOS is located.
 
 ## 2. Flashing
