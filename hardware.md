@@ -135,6 +135,7 @@ Before making any modifications, you must take at least 2 independent read dumps
 Connect your SOP8/SOIC8 test clip to the hardware programmer. Double-check the Pin 1 marker (usually indicated by a red wire on the ribbon cable and a dot on the chip).
 
 ![](media/ch341a.jpg)
+![](media/ch341a-on-chip.jpg)
 
 #### Reading the Current Firmware (8MB chip)
 
