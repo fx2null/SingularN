@@ -6,10 +6,10 @@ SingularN is user-friendly build script for hardened Heads firmware on ThinkPad 
 This project uses a custom bootsplash logo based on the official Heads community artwork. 
 Special thanks to the original creators and remix authors:
 
-- **@ThePlexus** — for the original Heads "Qube" concept (combining coreboot's rabbit, LinuxBoot's penguin, and the Heads "H" logo).
-- **@d-wid** — for the double-headed Janus logo design and creative remixes.
-- **@ThrillerAtPlay** — for the Matrix binary background used in the theme composition.
-- **@tlaurion** — for maintaining the original configuration assets and transformation guides.
+- **@ThePlexus**
+- **@d-wid**
+- **@ThrillerAtPlay**
+- **@tlaurion**
 
 The final bootsplash used in this repository is a personal modification of these combined community works.
 
