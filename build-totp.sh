@@ -135,14 +135,14 @@ build_in_container
 ROM_PATH="./heads/build/x86/${BOARD_NAME}"
 
 mv "${ROM_PATH}/heads-${BOARD_NAME}-"*"dirty.rom" \
-   "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-FULL-12MB.rom" 2>/dev/null || true
+   "${ROM_PATH}/SingularN-T430-HOTP-${VERSION}-FULL-12MB.rom" 2>/dev/null || true
 mv "${ROM_PATH}/heads-${BOARD_NAME}-"*"-bottom.rom" \
-   "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-BOTTOM-8MB.rom" 2>/dev/null || true
+   "${ROM_PATH}/SingularN-T430-HOTP-${VERSION}-BOTTOM-8MB.rom" 2>/dev/null || true
 mv "${ROM_PATH}/heads-${BOARD_NAME}-"*"-top.rom" \
-   "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-TOP-4MB.rom" 2>/dev/null || true
+   "${ROM_PATH}/SingularN-T430-HOTP-${VERSION}-TOP-4MB.rom" 2>/dev/null || true
 
 echo "Done: "
-sha256sum "${ROM_PATH}/SingularN-T430-HOTP-${VERSION}-"*
+sha256sum "${ROM_PATH}/SingularN-T430-TOTP-${VERSION}-"*
 mkdir -p SingularN-ROMS
 mkdir -p Dumps
 cp ${ROM_PATH}/SingularN* ./SingularN-ROMS/
