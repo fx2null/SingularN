@@ -1,5 +1,18 @@
 # SingularN
 SingularN is user-friendly build script for hardened Heads firmware on ThinkPad T430. Key feature is [Libreboot](https://libreboot.org)-inspired [coreboot](https://www.coreboot.org) flags for maximum security and openness. This project automates the compilation of firmware based on the [Heads](https://github.com/osresearch/heads) project.
+
+## Credits & Acknowledgments
+
+This project uses a custom bootsplash logo based on the official Heads community artwork. 
+Special thanks to the original creators and remix authors:
+
+- **@ThePlexus**
+- **@d-wid**
+- **@ThrillerAtPlay**
+- **@tlaurion**
+
+The final bootsplash used in this repository is a personal modification of these combined community works.
+
 ## Installation Guide
 
 This guide is split into two parts: **Software** and **Hardware**. 
