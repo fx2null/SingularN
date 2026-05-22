@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BOARD_NAME="EOL_t430-hotp-maximized"
-VERSION="v3.0.0"
+VERSION="v3.1.0"
 NUM_CPUS=$(( $(nproc) - 1 ))
 
 build_in_container() {
@@ -48,7 +48,7 @@ build_in_container() {
 }
 
 if [ ! -d "heads" ]; then
-    git clone https://github.com/osresearch/heads.git
+    git clone https://github.com/linuxboot/heads
 fi
 
 echo 'Changing bootsplash...'
@@ -87,21 +87,17 @@ heads_settings=(
 )
 
 cb_settings=(
+    "CONFIG_USE_BLOBS=y"
     "CONFIG_MAINBOARD_USE_LIBGFXINIT=y"
     "CONFIG_VGA_ROM_RUN=n"
-    "CONFIG_GENERIC_LINEAR_FRAMEBUFFER=y"
-    "CONFIG_LINEAR_FRAMEBUFFER=y"
-    "CONFIG_DRAM_RESET_GATE_SKIP=y"
-   #"CONFIG_INTEL_CHIPSET_LOCKDOWN=y"
+    "CONFIG_NO_EARLY_GFX_INIT=y"
+    "CONFIG_VGA_TEXT_FRAMEBUFFER=n"
     "CONFIG_IOMMU=y"
     "CONFIG_INTEL_VTD=y"
-    "CONFIG_LINEAR_FRAMEBUFFER_MAX_HEIGHT=1600"
-    "CONFIG_LINEAR_FRAMEBUFFER_MAX_WIDTH=2560"
-    "CONFIG_SECURITY_CLEAR_DRAM_ON_REGULAR_BOOT=y"
-    "CONFIG_DECOMPRESS_OFAST=y"
-    "CONFIG_NO_STAGE_CACHE=y"
-    "CONFIG_RAMSTAGE_ADA=y"
+    "CONFIG_GENERIC_LINEAR_FRAMEBUFFER=y"
+    "CONFIG_LINEAR_FRAMEBUFFER=y"
 )
+
 
 apply_heads_setting() {
     local key val entry
@@ -135,18 +131,6 @@ apply_kconfig_setting() {
 
 for s in "${heads_settings[@]}"; do apply_heads_setting "$s" "$HEADS_CONF"; done
 for s in "${cb_settings[@]}";    do apply_kconfig_setting "$s" "$CB_CONF";  done
-
-if grep -qE "^export CONFIG_BOOT_KERNEL_ADD=" "$HEADS_CONF"; then
-    sed -i 's|^export CONFIG_BOOT_KERNEL_ADD=.*|export CONFIG_BOOT_KERNEL_ADD="iommu=on,igfx,verbose intel_iommu=on,igfx_off swiotlb=65536"|' "$HEADS_CONF"
-else
-    echo 'export CONFIG_BOOT_KERNEL_ADD="iommu=on,igfx,verbose intel_iommu=on,igfx_off swiotlb=65536"' >> "$HEADS_CONF"
-fi
-
-if grep -qE "^export CONFIG_BOOT_KERNEL_REMOVE=" "$HEADS_CONF"; then
-    sed -i 's|^export CONFIG_BOOT_KERNEL_REMOVE=.*|export CONFIG_BOOT_KERNEL_REMOVE=""|' "$HEADS_CONF"
-else
-    echo 'export CONFIG_BOOT_KERNEL_REMOVE=""' >> "$HEADS_CONF"
-fi
 
 cd ..
 build_in_container
